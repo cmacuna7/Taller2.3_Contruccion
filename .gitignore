@@ -1,0 +1,11 @@
+# Secretos locales
+.env
+.env.*
+!.env.example
+
+# Node / NestJS
+node_modules/
+dist/
+coverage/
+*.log
+*.tsbuildinfo/

@@ -1,0 +1,24 @@
+# PostgreSQL 17 del microservicio 1 (Identidad y usuarios) de AulaConecta.
+# La contraseña llega desde .env (no se sube a Git): copia .env.example a .env.
+services:
+  postgres:
+    image: postgres:17
+    container_name: aulaconecta-identidad-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: identidad
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Copia .env.example a .env y define POSTGRES_PASSWORD}
+      POSTGRES_DB: db_identidad
+    ports:
+      # 5434 como en la guía; si ese puerto está ocupado en tu equipo, cambia POSTGRES_PORT en .env
+      - "${POSTGRES_PORT:-5434}:5432"
+    volumes:
+      - identidad_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U identidad -d db_identidad"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  identidad_pgdata:
